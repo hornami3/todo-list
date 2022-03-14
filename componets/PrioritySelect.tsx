@@ -1,5 +1,5 @@
 import { Box, FormControl, FormLabel } from "@chakra-ui/react";
-import Select, { SingleValue } from "react-select";
+import Select, { SingleValue, components } from "react-select";
 import { Priority } from "../enums/Priority.enum";
 import CircleIcon from "./common/CircleIcon";
 
@@ -38,6 +38,19 @@ interface Props {
   onChange: (event: SingleValue<{ label: string; value: Priority }>) => void;
 }
 
+const Control = ({ children, ...props }: any) => {
+  return (
+    <components.Control {...props}>
+      <Box pl={2} pb={0.5} height="max-content">
+        <CircleIcon
+          color={PriorityColor[props.getValue()[0].value as Priority]}
+        />
+      </Box>
+      {children}
+    </components.Control>
+  );
+};
+
 const PrioritySelect = ({ label, value, onChange }: Props) => {
   return (
     <FormControl>
@@ -45,7 +58,7 @@ const PrioritySelect = ({ label, value, onChange }: Props) => {
       <Select
         value={options.filter((option) => option.value === value)}
         options={options}
-        components={{ Option: CustomOption }}
+        components={{ Option: CustomOption, Control }}
         onChange={onChange}
       />
     </FormControl>
