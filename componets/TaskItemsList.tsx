@@ -92,19 +92,27 @@ const TaskItemsList = ({ id, title, taskItems, onEditSection }: Props) => {
     } else if (showDoneTasks) {
       setTasks(taskItems.filter((task) => task.isDone));
     }
-  }, [taskItems, setTasks]);
+  }, [showTodoTasks, showDoneTasks, taskItems, setTasks]);
 
   return (
     <Box
       bg="white"
       maxW="sm"
       width="100%"
+      height="max-content"
       p={4}
       borderRadius={4}
       boxShadow="md"
     >
       <Box display="flex">
-        <Heading as="h2" size="md" width="100%">
+        <Heading
+          as="h2"
+          size="md"
+          width="100%"
+          textOverflow="ellipsis"
+          overflow="hidden"
+          whiteSpace="nowrap"
+        >
           {title}
         </Heading>
         <Menu>
@@ -139,23 +147,25 @@ const TaskItemsList = ({ id, title, taskItems, onEditSection }: Props) => {
           </MenuList>
         </Menu>
       </Box>
-      <ButtonGroup spacing={6} my={4}>
-        <FilterButton
-          text="All"
-          isActive={!showDoneTasks && !showTodoTasks}
-          onClick={showAllTasksHandler}
-        />
-        <FilterButton
-          text="To do"
-          isActive={showTodoTasks && !showDoneTasks}
-          onClick={showTodoTasksHandler}
-        />
-        <FilterButton
-          text="Done"
-          isActive={showDoneTasks && !showTodoTasks}
-          onClick={showDoneTasksHandler}
-        />
-      </ButtonGroup>
+      {taskItems.length > 0 && (
+        <ButtonGroup spacing={6} my={4}>
+          <FilterButton
+            text="All"
+            isActive={!showDoneTasks && !showTodoTasks}
+            onClick={showAllTasksHandler}
+          />
+          <FilterButton
+            text="To do"
+            isActive={showTodoTasks && !showDoneTasks}
+            onClick={showTodoTasksHandler}
+          />
+          <FilterButton
+            text="Done"
+            isActive={showDoneTasks && !showTodoTasks}
+            onClick={showDoneTasksHandler}
+          />
+        </ButtonGroup>
+      )}
 
       <VStack align="flex-start">
         {tasks.map((taskItem) => (
